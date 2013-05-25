@@ -11,6 +11,7 @@ module FixProtocolTools
       @spec = nil
       @is_even_line = true
       @output = init_output_chanel options
+      @grep = options[:grep]
     end
 
     def process()

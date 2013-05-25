@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = FixProtocolTools::VERSION
   spec.authors       = ["Luxor"]
   spec.email         = ["atuzov@gmail.com"]
-  spec.description   = %q{nns}
-  spec.summary       = %q{sjjsjdd}
+  spec.description   = %q{log viewer for fix protocol logs}
+  spec.summary       = %q{Works like gzless, you just read fix file in human readable format}
   spec.homepage      = ""
   spec.license       = "MIT"
 
