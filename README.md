@@ -4,6 +4,14 @@ Provides fixless command which shows fix protocol log in human readable way.
 
 Inspired by http://code.nomad-labs.com/fix-message-viewer/
 
+## Key features
+
+* coloring
+* grep by enum values with marked result
+* include fix own dictionary (not released yet)
+
+## Examples
+
 Classic fix log:
 
     20111107-10:52:22.133: 8=FIX.4.49=10035=A34=149=XXX-MD52=20111107-10:52:22.12856=XXX-XUAT98=0108=30141=Y553=XXXmd554=XXXmd110=146
@@ -47,9 +55,12 @@ Or install it yourself as:
 
 ## Usage
 
-fixless [options] [fixlogfile]
+Usage: fixless [options] [fixlogfile]
+        -c, --[no-]color                 Generate color output
+        -h, --help                       Display help message
+        -l, --[no-]less                  Use less command for output
 
-options are:
-* -c -- color output
-* -l -- use less command for output
-
+Usage: fixless [options] [fixlogfile]
+        -c, --[no-]color                 Generate color output
+        -h, --help                       Display help message
+        -l, --[no-]less                  Use less command for output

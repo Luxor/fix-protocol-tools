@@ -12,12 +12,13 @@ module FixProtocolTools
       opt_parse = OptionParser.new do |opts|
         opts.banner = "Usage: fixless [options] [fixlogfile]"
 
-        color(options, opts)
-        help(opts)
-
         opts.on('-l', '--[no-]less', 'Use less command for output') do |color|
           options[:less] = color
         end
+
+        color(options, opts)
+        help(opts)
+        dictionary(options, opts)
       end
 
       opt_parse.parse!
@@ -34,6 +35,7 @@ module FixProtocolTools
           options[:grep] = pattern
         end
 
+        dictionary(options, opts)
         color(options, opts)
         help(opts)
       end
@@ -56,6 +58,12 @@ module FixProtocolTools
         Term::ANSIColor::coloring = color
         options[:color] = color
       end
+    end
+
+    def dictionary(options, opts)
+      #opts.on('-d', '--dictionary PATH_TO_DICTIONARY') do |dictionary|
+      #  options[:dictionary] = dictionary
+      #end
     end
   end
 end
