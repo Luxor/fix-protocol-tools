@@ -6,5 +6,4 @@ $LOAD_PATH.unshift(path) unless $LOAD_PATH.include? path
 require 'optparse'
 require 'fix_protocol_tools'
 
-raise "To be implemented"
-#FixProtocolTools::Runner.new.grep!
+FixProtocolTools::Runner.new.grep!

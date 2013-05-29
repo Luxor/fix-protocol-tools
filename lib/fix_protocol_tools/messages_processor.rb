@@ -51,22 +51,28 @@ module FixProtocolTools
       return unless fields
 
       @spec ||= resolve_specification(fields)
-      @output.puts(yellow('        =-=-=-=-=-=-==-=-=-=-=-=-==-=-=-=-=-=-=        '))
+      rows = []
+      rows << yellow('        =-=-=-=-=-=-==-=-=-=-=-=-==-=-=-=-=-=-=        ')
+      is_found = @grep.nil?
 
       fields.each do |field_id, value_id|
         field_name = @spec.field_name(field_id) || field_id
         field_name_padding = @spec.max_field_length - field_name.length - 2
+        value_name = if @spec.message_type?(field_id)
+                       red(@spec.message_type(value_id))
+                     else
+                       @spec.enum_value(field_id, value_id)
+                     end
 
-        print_line(format_line(field_id, field_name, field_name_padding, value_id))
-      end
-    end
+        if @grep && (value_name.include?(@grep) || value_id.include?(@grep))
+          value_name = red(value_name)
+          is_found = true
+        end
 
-    def format_line(field_id, field_name, padding, value_id)
-      if @spec.message_type?(field_id)
-        formatted_row(field_id, value_id, field_name, red(@spec.message_type(value_id)), padding)
-      else
-        formatted_row(field_id, value_id, field_name, @spec.enum_value(field_id, value_id), padding)
+        rows << formatted_row(field_id, value_id, field_name, value_name, field_name_padding)
       end
+
+      rows.each { |row| @output.puts row } if is_found
     end
 
     def formatted_row(field_id, value_id, field_name, value_name, field_name_padding)

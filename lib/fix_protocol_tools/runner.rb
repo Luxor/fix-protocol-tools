@@ -1,13 +1,14 @@
 require 'term/ansicolor'
 require 'fix_protocol_tools/messages_processor'
 
-Term::ANSIColor::coloring = STDOUT.isatty
 
 module FixProtocolTools
   class Runner
+    @coloring = Term::ANSIColor::coloring = STDOUT.isatty
+
 
     def less!
-      options = {:less => false, :color => false}
+      options = {:less => false, :color => @coloring}
       opt_parse = OptionParser.new do |opts|
         opts.banner = "Usage: fixless [options] [fixlogfile]"
 
@@ -25,11 +26,15 @@ module FixProtocolTools
     end
 
     def grep!
-      options = {:color => false}
+      options = {:color => @coloring}
       opt_parse = OptionParser.new do |opts|
-        opts.banner = "Usage: fixgrep [options] [fixlogfile]"
+        opts.banner = "Usage: fixgrep -v value [options] [fixlogfile]"
 
-        color(opts, options)
+        opts.on('-v', '--v value') do |pattern|
+          options[:grep] = pattern
+        end
+
+        color(options, opts)
         help(opts)
       end
 

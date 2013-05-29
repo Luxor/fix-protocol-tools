@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["atuzov@gmail.com"]
   spec.description   = %q{log viewer for fix protocol logs}
   spec.summary       = %q{Works like gzless, you just read fix file in human readable format}
-  spec.homepage      = ""
+  spec.homepage      = 'https://github.com/Luxor/fix-protocol-tools'
   spec.license       = "MIT"
 
   spec.add_dependency 'term-ansicolor', '>= 1.1.5'
