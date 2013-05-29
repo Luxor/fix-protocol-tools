@@ -56,11 +56,11 @@ Or install it yourself as:
 ## Usage
 
 Usage: fixless [options] [fixlogfile]
-        -c, --[no-]color                 Generate color output
-        -h, --help                       Display help message
-        -l, --[no-]less                  Use less command for output
+    -c, --[no-]color                 Generate color output
+    -h, --help                       Display help message
+    -l, --[no-]less                  Use less command for output
 
 Usage: fixless [options] [fixlogfile]
-        -c, --[no-]color                 Generate color output
-        -h, --help                       Display help message
-        -l, --[no-]less                  Use less command for output
+    -c, --[no-]color                 Generate color output
+    -h, --help                       Display help message
+    -l, --[no-]less                  Use less command for output
