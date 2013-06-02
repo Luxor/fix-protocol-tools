@@ -23,6 +23,13 @@ module FixProtocolTools::Specification
       @message_types[tag35]
     end
 
+    def sender?(tag)
+      tag == '49'
+    end
+
+    def target?(tag)
+      tag == '56'
+    end
 
     def enum_value(field, enum_id)
       enum = @enums[field]

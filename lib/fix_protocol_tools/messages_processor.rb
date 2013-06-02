@@ -45,7 +45,7 @@ module FixProtocolTools
 
     private
 
-    def print_line(line)
+    def print_row(line)
       @output.puts(@is_even_line ? green(line) : line)
       @is_even_line = !@is_even_line
     end
@@ -56,17 +56,21 @@ module FixProtocolTools
 
       @spec ||= resolve_specification(fields)
       rows = []
-      rows << yellow('        =-=-=-=-=-=-==-=-=-=-=-=-==-=-=-=-=-=-=        ')
       is_found = @grep.nil?
+      message_name = 'Undefined'
+      sender = 'Undefined'
+      target = 'Undefined'
 
       fields.each do |field_id, value_id|
         field_name = @spec.field_name(field_id) || field_id
         field_name_padding = @spec.max_field_length - field_name.length - 2
         value_name = if @spec.message_type?(field_id)
-                       red(@spec.message_type(value_id))
+                       message_name = @spec.message_type(value_id)
                      else
                        @spec.enum_value(field_id, value_id)
                      end
+        sender = value_name if @spec.sender? field_id
+        target = value_name if @spec.target? field_id
 
         if @grep && (value_name.include?(@grep) || value_id.include?(@grep))
           value_name = red(value_name)
@@ -76,13 +80,19 @@ module FixProtocolTools
         rows << formatted_row(field_id, value_id, field_name, value_name, field_name_padding)
       end
 
-      rows.each { |row| @output.puts(row) } if is_found
+      if is_found
+        @is_even_line = false
+        @output.puts ''
+        @output.puts("[#{red(message_name + " #{sender} >>> #{target}")}]" +
+                         yellow(" =-=-=-=-=-=-==-=-=-=-=-=-==-=-=-=-=-=-=        "))
+        rows.each { |row| print_row(row) }
+      end
     end
 
     def formatted_row(field_id, value_id, field_name, value_name, field_name_padding)
       field_name + '  =  '.rjust(field_name_padding) + value_name +
           '  '.rjust(35 - value_name.length) +
-          field_id.rjust(5 - field_id.length) + '  =  ' + value_id
+          field_id + '=' + value_id
     end
 
     def resolve_specification(fields)
