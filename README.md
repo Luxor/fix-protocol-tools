@@ -8,7 +8,7 @@ Inspired by http://code.nomad-labs.com/fix-message-viewer/
 
 * coloring
 * grep by enum values with marked result
-* include fix own dictionary
+* include own fix dictionary
 
 ## Examples
 
@@ -40,16 +40,6 @@ Viewed by fixless:
             =-=-=-=-=-=-==-=-=-=-=-=-==-=-=-=-=-=-=
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-    gem 'fix_protocol_tools'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
 
     $ gem install fix_protocol_tools
 
