@@ -61,8 +61,8 @@ _Usage:_ fixless \[options\] \[fixlogfile\]
     -h, --help                       Display help message
     -l, --[no-]less                  Use less command for output
 
-_Usage:_ fixless \[options\] \[fixlogfile\]
+_Usage:_ fixgrep \[options\] \[fixlogfile\]
 
     -c, --[no-]color                 Generate color output
     -h, --help                       Display help message
-    -l, --[no-]less                  Use less command for output
+    -v, --value                      grep for value
