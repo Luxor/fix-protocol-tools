@@ -1,6 +1,6 @@
 require 'term/ansicolor'
 require 'logger'
-require 'fix_protocol_tools/specification/fix_specification'
+require 'fix_protocol_tools/specification/dictionary'
 
 module FixProtocolTools
   class MessagesProcessor
@@ -12,6 +12,10 @@ module FixProtocolTools
       @is_even_line = true
       @output = init_output_chanel options
       @grep = options[:grep]
+
+      if options[:dictionary]
+        @spec = Specification::Dictionary.new(Specification::Reader.read_file(options[:dictionary]))
+      end
     end
 
     def process()
@@ -72,7 +76,7 @@ module FixProtocolTools
         rows << formatted_row(field_id, value_id, field_name, value_name, field_name_padding)
       end
 
-      rows.each { |row| @output.puts row } if is_found
+      rows.each { |row| @output.puts(row) } if is_found
     end
 
     def formatted_row(field_id, value_id, field_name, value_name, field_name_padding)
@@ -83,7 +87,7 @@ module FixProtocolTools
 
     def resolve_specification(fields)
       fix_version = fields[0].last
-      Specification::Specification.new(fix_version)
+      Specification::Dictionary.new(Specification::Reader.read_defaults(fix_version))
     end
 
     def fix_message_fields(line)

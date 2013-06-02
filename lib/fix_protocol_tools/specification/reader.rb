@@ -8,10 +8,15 @@ module FixProtocolTools::Specification
 
     attr_reader :fields, :message_types, :enums, :max_field_length
 
-    def self.read_specification(fix_version)
+    def self.read_defaults(fix_version)
+      path = File.join(SPECIFICATION_PATH, fix_version.delete('.') + '.xml')
+      read_file(path)
+    end
+
+    def self.read_file(path)
       reader = new
 
-      File.open(File.join(SPECIFICATION_PATH, fix_version.delete('.') + '.xml'), 'r') do |file|
+      File.open(path, 'r') do |file|
         REXML::Document.parse_stream(file, reader)
       end
 
@@ -21,7 +26,7 @@ module FixProtocolTools::Specification
     def initialize
       @message_types = {}
       @fields = {}
-      @enums = Hash.new { |h, k|  h[k] = {} }
+      @enums = Hash.new { |h, k| h[k] = {} }
 
       @max_field_length = 0
     end

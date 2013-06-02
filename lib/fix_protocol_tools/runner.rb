@@ -4,44 +4,49 @@ require 'fix_protocol_tools/messages_processor'
 
 module FixProtocolTools
   class Runner
-    @coloring = Term::ANSIColor::coloring = STDOUT.isatty
+    DEFAULTS = {
+        :color => Term::ANSIColor::coloring = STDOUT.isatty,
+        :dictionary => ENV['FPT_DICT']
+    }
 
+    def initialize
+       @options = DEFAULTS
+    end
 
     def less!
-      options = {:less => false, :color => @coloring}
+      @options.merge!(:less => false)
       opt_parse = OptionParser.new do |opts|
         opts.banner = "Usage: fixless [options] [fixlogfile]"
 
         opts.on('-l', '--[no-]less', 'Use less command for output') do |color|
-          options[:less] = color
+          @options[:less] = color
         end
 
-        color(options, opts)
+        dictionary(opts)
+        color(opts)
         help(opts)
-        dictionary(options, opts)
       end
 
       opt_parse.parse!
 
-      MessagesProcessor.new(options).process
+      MessagesProcessor.new(@options).process
     end
 
     def grep!
-      options = {:color => @coloring}
       opt_parse = OptionParser.new do |opts|
         opts.banner = "Usage: fixgrep -v value [options] [fixlogfile]"
 
         opts.on('-v', '--v value') do |pattern|
-          options[:grep] = pattern
+          @options[:grep] = pattern
         end
 
-        dictionary(options, opts)
-        color(options, opts)
+        dictionary(opts)
+        color(opts)
         help(opts)
       end
 
       opt_parse.parse!
-      MessagesProcessor.new(options).process
+      MessagesProcessor.new(@options).process
     end
 
     private
@@ -53,17 +58,17 @@ module FixProtocolTools
       end
     end
 
-    def color(options, opts)
+    def color(opts)
       opts.on('-c', '--[no-]color', 'Generate color output') do |color|
         Term::ANSIColor::coloring = color
-        options[:color] = color
+        @options[:color] = color
       end
     end
 
-    def dictionary(options, opts)
-      #opts.on('-d', '--dictionary PATH_TO_DICTIONARY') do |dictionary|
-      #  options[:dictionary] = dictionary
-      #end
+    def dictionary(opts)
+      opts.on('-d', '--dictionary PATH_TO_DICTIONARY', 'You can set up FPT_DICT env variable instead') do |dictionary|
+        @options[:dictionary] = dictionary
+      end
     end
   end
 end

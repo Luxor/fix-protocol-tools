@@ -8,7 +8,7 @@ Inspired by http://code.nomad-labs.com/fix-message-viewer/
 
 * coloring
 * grep by enum values with marked result
-* include fix own dictionary (not released yet)
+* include fix own dictionary
 
 ## Examples
 

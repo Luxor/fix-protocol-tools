@@ -1,12 +1,10 @@
-require 'fix_protocol_tools/specification/specification_reader'
+require 'fix_protocol_tools/specification/reader'
 
 module FixProtocolTools::Specification
-  class Specification
+  class Dictionary
     attr_reader :max_field_length
 
-    def initialize(fix_version)
-      reader = Reader.read_specification(fix_version)
-
+    def initialize(reader)
       @enums = reader.enums
       @fields = reader.fields
       @message_types = reader.message_types
