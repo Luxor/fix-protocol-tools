@@ -104,8 +104,8 @@ module FixProtocolTools
       start_index = line.index("8=FIX")
       end_index = line.rindex(MESSAGE_DELIMITER)
 
-      if start_index || end_index
-        line[start_index, end_index].split(MESSAGE_DELIMITER).map do |pair|
+      if start_index && end_index
+        line[start_index ... end_index].split(MESSAGE_DELIMITER).map do |pair|
           pair.strip.split '='
         end
       else
