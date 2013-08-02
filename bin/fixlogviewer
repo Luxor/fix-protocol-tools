@@ -6,4 +6,4 @@ $LOAD_PATH.unshift(path) unless $LOAD_PATH.include? path
 require 'optparse'
 require 'fix_protocol_tools'
 
-FixProtocolTools::Runner.new.less!
+FixProtocolTools::Runner.new.run!

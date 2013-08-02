@@ -31,6 +31,10 @@ module FixProtocolTools::Specification
       tag == '56'
     end
 
+    def heartbeat?(tag, value)
+      message_type?(tag) && value == '0'
+    end
+
     def enum_value(field, enum_id)
       enum = @enums[field]
 

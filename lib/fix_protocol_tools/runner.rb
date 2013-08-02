@@ -6,69 +6,61 @@ module FixProtocolTools
   class Runner
     DEFAULTS = {
         :color => Term::ANSIColor::coloring = STDOUT.isatty,
-        :dictionary => ENV['FPT_DICT']
+        :dictionary => ENV['FPT_DICT'],
+        :highlights => ENV['FPT_HIGHLIGHTS'],
+        :heartbeats => false
     }
 
     def initialize
-       @options = DEFAULTS
+      @options = DEFAULTS
     end
 
-    def less!
-      @options.merge!(:less => false)
+    def run!
       opt_parse = OptionParser.new do |opts|
-        opts.banner = "Usage: fixless [options] [fixlogfile]"
+        opts.banner = "Usage: #{$0} [options] [file]"
 
-        opts.on('-l', '--[no-]less', 'Use less command for output') do |color|
-          @options[:less] = color
+        opts.on('--dictionary PATH_TO_DICTIONARY', 'You can set up FPT_DICT env variable instead') do |dictionary|
+          @options[:dictionary] = dictionary
         end
 
-        dictionary(opts)
-        color(opts)
-        help(opts)
-      end
+        opts.on('--highlight field1,field2', Array, 'Highlight number of fields, you can set FPT_HIGHLIGHTS env variable instead') do |highlights|
+          @options[:highlights] = highlights
+        end
 
-      opt_parse.parse!
+        opts.on('-c', '--[no-]color', 'Generate color output') do |color|
+          Term::ANSIColor::coloring = color
+          @options[:color] = color
+        end
 
-      MessagesProcessor.new(@options).process
-    end
-
-    def grep!
-      opt_parse = OptionParser.new do |opts|
-        opts.banner = "Usage: fixgrep -v value [options] [fixlogfile]"
-
-        opts.on('-v', '--v value') do |pattern|
+        opts.on('--grep', 'Grep by field id or name') do |pattern|
           @options[:grep] = pattern
         end
 
-        dictionary(opts)
-        color(opts)
-        help(opts)
+        opts.on('--[no-]heartbeats', 'Show full report on heartbeat messages') do |heartbeats|
+          @options[:heartbeats] = heartbeats
+        end
+
+        opts.on_tail('-h', '--help', 'Display help message') do
+          puts opts
+          exit
+        end
+
+        opts.on_tail('-v', '--version', 'Display version message') do
+          puts FixProtocolTools::VERSION
+          exit
+        end
       end
 
       opt_parse.parse!
+
+      ARGV.each do |f|
+        unless File.exists?(f)
+          puts "File #{f} does not exists"
+          exit false
+        end
+      end
+
       MessagesProcessor.new(@options).process
-    end
-
-    private
-
-    def help(opts)
-      opts.on('--help', '-h', 'Display help message') do
-        puts opts
-        exit
-      end
-    end
-
-    def color(opts)
-      opts.on('-c', '--[no-]color', 'Generate color output') do |color|
-        Term::ANSIColor::coloring = color
-        @options[:color] = color
-      end
-    end
-
-    def dictionary(opts)
-      opts.on('-d', '--dictionary PATH_TO_DICTIONARY', 'You can set up FPT_DICT env variable instead') do |dictionary|
-        @options[:dictionary] = dictionary
-      end
     end
   end
 end

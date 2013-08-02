@@ -10,8 +10,10 @@ module FixProtocolTools
     def initialize(options)
       @spec = nil
       @is_even_line = true
-      @output = init_output_chanel options
+      @output = STDOUT
       @grep = options[:grep]
+      @highlights = options[:highlights] || []
+      @heartbeats = options[:heartbeats]
 
       if options[:dictionary]
         @spec = Specification::Dictionary.new(Specification::Reader.read_file(options[:dictionary]))
@@ -39,8 +41,6 @@ module FixProtocolTools
       end
 
       process_line(buffer) if buffer
-
-      @output.close
     end
 
     private
@@ -56,7 +56,7 @@ module FixProtocolTools
 
       @spec ||= resolve_specification(fields)
       rows = []
-      is_found = @grep.nil?
+      show_message = @grep.nil?
       message_name = 'Undefined'
       sender = 'Undefined'
       target = 'Undefined'
@@ -74,13 +74,15 @@ module FixProtocolTools
 
         if @grep && (value_name.include?(@grep) || value_id.include?(@grep))
           value_name = red(value_name)
-          is_found = true
+          show_message = true
         end
+
+        show_message = false if !@heartbeats && @spec.heartbeat?(field_id, value_id)
 
         rows << formatted_row(field_id, value_id, field_name, value_name, field_name_padding)
       end
 
-      if is_found
+      if show_message
         @is_even_line = false
         @output.puts ''
         @output.puts("[#{red(message_name + " #{sender} >>> #{target}")}]" +
@@ -90,7 +92,13 @@ module FixProtocolTools
     end
 
     def formatted_row(field_id, value_id, field_name, value_name, field_name_padding)
-      field_name + '  =  '.rjust(field_name_padding) + value_name +
+      highlight_offset = 0
+      if @highlights and @highlights.include?(field_name)
+        field_name = ">#{field_name}"
+        highlight_offset += 1
+      end
+
+      field_name + '  =  '.rjust(field_name_padding - highlight_offset) + value_name +
           '  '.rjust(35 - value_name.length) +
           field_id + '=' + value_id
     end
@@ -110,16 +118,6 @@ module FixProtocolTools
         end
       else
         nil
-      end
-    end
-
-    def init_output_chanel(options)
-      if options[:less]
-        cmd = 'less'
-        cmd += ' -r' if options[:color]
-        IO.popen(cmd, 'w')
-      else
-        STDOUT
       end
     end
   end
