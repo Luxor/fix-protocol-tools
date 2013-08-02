@@ -27,6 +27,8 @@ Inspired by http://code.nomad-labs.com/fix-message-viewer/
 
     $ fixlogviewer somefixfile
 
+and    
+
            =-=-=-=-=-=-==-=-=-=-=-=-==-=-=-=-=-=-=
     BeginString                    =  FIX.4.4                               8  =  FIX.4.4
     BodyLength                     =  100                                   9  =  100
@@ -46,6 +48,7 @@ Inspired by http://code.nomad-labs.com/fix-message-viewer/
 ### With color output
 
     $ fixlogviewer.bat test/example.fix.log -c --highlight=ExecType --no-heartbeats
+and
 
 ![ScreenShot](example.png)
 
