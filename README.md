@@ -1,6 +1,6 @@
 # FixProtocolTools
 
-Provides fixless command which shows fix protocol log in human readable way.
+Provides fixlogviewer command which shows fix protocol log in human readable way.
 
 Inspired by http://code.nomad-labs.com/fix-message-viewer/
 
