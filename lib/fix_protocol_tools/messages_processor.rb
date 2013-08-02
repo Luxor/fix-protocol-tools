@@ -92,15 +92,15 @@ module FixProtocolTools
     end
 
     def formatted_row(field_id, value_id, field_name, value_name, field_name_padding)
-      highlight_offset = 0
-      if @highlights and @highlights.include?(field_name)
-        field_name = ">#{field_name}"
-        highlight_offset += 1
-      end
-
-      field_name + '  =  '.rjust(field_name_padding - highlight_offset) + value_name +
+      row = field_name + '  =  '.rjust(field_name_padding) + value_name +
           '  '.rjust(35 - value_name.length) +
           field_id + '=' + value_id
+
+      if @highlights and @highlights.include?(field_name)
+        yellow(row)
+      else
+        row
+      end
     end
 
     def resolve_specification(fields)

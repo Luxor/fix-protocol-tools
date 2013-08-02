@@ -17,7 +17,7 @@ module FixProtocolTools
 
     def run!
       opt_parse = OptionParser.new do |opts|
-        opts.banner = "Usage: #{$0} [options] [file]"
+        opts.banner = "Usage: #{File.basename($0)} [options] [file]"
 
         opts.on('--dictionary PATH_TO_DICTIONARY', 'You can set up FPT_DICT env variable instead') do |dictionary|
           @options[:dictionary] = dictionary
