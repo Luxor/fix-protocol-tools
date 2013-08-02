@@ -9,6 +9,8 @@ Inspired by http://code.nomad-labs.com/fix-message-viewer/
 * coloring
 * grep by enum values with marked result
 * include own fix dictionary
+* highligh fields
+* hide/show heartbeats
 
 ## Examples
 
@@ -21,7 +23,7 @@ Classic fix log:
     20111107-10:52:54.374: 8=FIX.4.49=13035=V34=449=XXX-MD52=20111107-10:52:54.37456=XXX-XUAT262=GBPUSD:0:0002263=1264=0265=0146=155=GBP/USD267=2269=0269=110=157
     20111107-10:52:54.688: 8=FIX.4.49=17335=W52=20111107-10:52:58.25549=XXX-XUAT56=XXX-MD34=6262=GBPUSD:0:000255=GBP/USD268=2269=0270=1.6006271=1000000299=28019269=1270=1.60082271=1000000299=2802010=207
 
-Viewed by fixless:
+Viewed by fixlgviewer:
 
            =-=-=-=-=-=-==-=-=-=-=-=-==-=-=-=-=-=-=
     BeginString                    =  FIX.4.4                               8  =  FIX.4.4
@@ -45,14 +47,14 @@ Viewed by fixless:
 
 ## Usage
 
-_Usage:_ fixless \[options\] \[fixlogfile\]
+Usage: fixlogviewer \[options\] \[file\]
 
+        --dictionary PATH_TO_DICTIONARY
+                                     You can set up FPT_DICT env variable instead
+        --highlight field1,field2    Highlight number of fields, you can set FPT_HIGHLIGHTS env variable instead
     -c, --[no-]color                 Generate color output
+        --grep                       Grep by field id or name
+        --[no-]heartbeats            Show full report on heartbeat messages
     -h, --help                       Display help message
-    -l, --[no-]less                  Use less command for output
+    -v, --version                    Display version message
 
-_Usage:_ fixgrep \[options\] \[fixlogfile\]
-
-    -c, --[no-]color                 Generate color output
-    -h, --help                       Display help message
-    -v, --value                      grep for value
